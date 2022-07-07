@@ -7,3 +7,39 @@ This repo is about an implementation of the prestigious research paper "A ConvNe
 Note that the python code files in /src are the final codes expected by the novel ConvNeXt architecture
 If you are looking for a step by step process following the paper just look to the notebook file
 
+
+
+As described in the original papers we'll start from a simple ResNet and move gradually to our ConvNext basing on the archictecture of the Swin Transformer. Please refer to the research papers : https://arxiv.org/abs/2201.03545*
+
+Let's sum up things to make them easier:
+
+The architecture is as follow:
+
+
+> ResNet-50
+
+> Macro Design
+
+> ResNext
+
+> Inverted Bottleneck
+
+> Large Kernel
+
+> Micro Design
+
+1.   We'll begin with the original ResNet-50 while considering an enhancement of capabilities by using some modern training procedures. Refer to this paper: https://openreview.net/pdf?id=NG6MJnVl6M5
+
+2.   Next, we'll adjust the design of the number of blocks in each stage from regular ResNet(3-4-6-3) to 3-3-9-3 to approach similar FLOPs as in Swin Transformer and also replace the ResNet stem cell of (7,7 stride=2) with one of (4,4 stride=4) following the Swin Transformer.
+
+3.   After that, we will mind use depthwise convolution effectively to reduce the network FLOPs by increasing the wifth if the network from 64 to 96.
+     We'll also use **Inverted Bottleneck** by inversing the ResNet bottleneckt structure
+
+4.   Following this we must increase the kernel of the bottleneck from 3,3 to a larger one: 7,7**
+
+5.   Finally we must use fewer activation functions and replace ReLU by GELU.
+
+  Use fewer normalization layers by replacing BachNorm (BN) with   Layer Normalization (LN).
+
+  And Add a (2,2 stride=2) spatial downsampling at the start of each state.
+    
